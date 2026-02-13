@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sajma Whell</title>
+    <style>
+        :root { --accent: #ffcc00; --bg: #1a1a2e; }
+        body { font-family: 'Arial Black', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        
+        /* Назва зверху */
+        .brand-title { color: var(--accent); font-size: 32px; text-transform: uppercase; margin-bottom: 10px; text-shadow: 3px 3px #000; letter-spacing: 2px; }
+
+        .machine { background: #222; border: 5px solid var(--accent); border-radius: 25px; padding: 25px; width: 320px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.4); text-align: center; }
+        
+        .display { background: #000; height: 120px; border-radius: 15px; margin: 20px 0; overflow: hidden; position: relative; border: 2px solid #444; }
+        .slot-wrapper { position: absolute; width: 100%; transition: top 3s cubic-bezier(0.1, 0, 0.1, 1); top: 0; }
+        .slot-item { height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        .brawler { font-size: 26px; color: #00ffcc; text-transform: uppercase; text-shadow: 0 0 10px #00ffcc; }
+        .trophy-text { color: #ff4444; font-size: 24px; margin-top: 5px; font-weight: bold; }
+
+        .controls { text-align: left; margin-bottom: 15px; }
+        label { font-size: 12px; color: #888; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #444; background: #333; color: white; font-size: 18px; margin-top: 5px; box-sizing: border-box; }
+        input:focus { border-color: var(--accent); outline: none; }
+        
+        button { background: linear-gradient(180deg, #ffcc00, #ff9900); border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 22px; cursor: pointer; box-shadow: 0 5px #cc7700; transition: 0.1s; font-family: 'Arial Black', sans-serif; }
+        button:active { transform: translateY(3px); box-shadow: 0 2px #cc7700; }
+        button:disabled { background: #555; box-shadow: none; color: #888; }
+    </style>
+</head>
+<body>
+
+<div class="machine">
+    <div class="brand-title">Sajma Whell</div>
+    
+    <div class="controls">
+        <label>Мінімум трофеїв (0-1000):</label>
+        <input type="number" id="minTrophies" value="1" min="0" max="1000">
+    </div>
+
+    <div class="display">
+        <div class="slot-wrapper" id="slotWrapper">
+            <div class="slot-item"><span class="brawler">ГОТОВИЙ?</span></div>
+        </div>
+    </div>
+
+    <button id="spinBtn" onclick="spin()">КРУТИТИ 🎲</button>
+</div>
+
+<script>
+const brawlers = ["Емз", "Френк", "Спайк", "Ріко", "Міна", "Пірс", "Поко", "Кольт", "Мортіс", "Ворон", "Отіс", "Кадзе", "Кендзі", "Анджело", "Амбер", "Карл", "Лілі", "Шейд", "Грей", "Байрон", "Фінкс", "Джин", "ДжуДжу", "Гас", "Нані", "Міпл", "Брок", "Тара", "Шеллі", "Гавс", "Аллі", "Бастер", "Мелоді", "Бель", "Пайпер", "Р.Т", "Сквік", "Пенні", "Беа", "Єва", "Беррі", "Хенк", "Чарлі", "Оллі", "Дерілл", "Глоуберт", "Бібі", "Булл", "Еш", "Мо", "Віллоу", "Пем", "Ніта", "Транк", "Джанет", "Менді", "Макс", "Джи Йонг", "Тік", "Барлі", "Ларі та Лорі", "Джіджі", "Сенді", "Сту", "Бо", "Даг", "Міко", "Драко", "Гейл", "Гріфф", "Діномайк", "Чак", "Кіт", "Базз", "Леон", "Колетт", "Лу", "Бонні", "Містер Пі", "Вольт", "Спраут", "Гром", "Фенг", "Честер", "Мейсі", "Сен", "8-біт", "Перл", "Едгар", "Зіггі", "Лумі", "Джесі", "Ель Прімо", "Джекі", "Лола", "Сем", "Роза", "Кленсі"];
+
+function spin() {
+    const btn = document.getElementById('spinBtn');
+    const wrapper = document.getElementById('slotWrapper');
+    let minVal = parseInt(document.getElementById('minTrophies').value) || 0;
+    
+    // Обмеження: не більше 1000
+    if (minVal > 1000) {
+        minVal = 1000;
+        document.getElementById('minTrophies').value = 1000;
+    }
+    if (minVal < 0) minVal = 0;
+
+    btn.disabled = true;
+    wrapper.style.transition = 'none';
+    wrapper.style.top = '0';
+    
+    let html = '';
+    // Генеруємо 20 випадкових результатів для ефекту прокрутки
+    for(let i=0; i<20; i++) {
+        const randomB = brawlers[Math.floor(Math.random() * brawlers.length)];
+        
+        // Генеруємо ЛЮБЕ число від minVal до 1000
+        const randomT = Math.floor(Math.random() * (1000 - minVal + 1)) + minVal;
+        
+        html += `<div class="slot-item">
+            <span class="brawler">${randomB}</span>
+            <div class="trophy-text">🏆 ${randomT}</div>
+        </div>`;
+    }
+    
+    wrapper.innerHTML = html;
+    
+    setTimeout(() => {
+        wrapper.style.transition = 'top 3s cubic-bezier(0.1, 0, 0.1, 1)';
+        wrapper.style.top = '-2280px'; 
+    }, 50);
+
+    setTimeout(() => { btn.disabled = false; }, 3100);
+}
+</script>
+
+</body>
+</html>
