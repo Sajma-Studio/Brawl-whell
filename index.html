@@ -3,94 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajma Whell</title>
+    <title>D.M Shifrator t - Live</title>
     <style>
-        :root { --accent: #ffcc00; --bg: #1a1a2e; }
-        body { font-family: 'Arial Black', sans-serif; background: var(--bg); color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-        
-        /* Назва зверху */
-        .brand-title { color: var(--accent); font-size: 32px; text-transform: uppercase; margin-bottom: 10px; text-shadow: 3px 3px #000; letter-spacing: 2px; }
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-red: #ff3131;
+            --bg-dark: #0d0d0d;
+            --card-bg: #1a1a1a;
+        }
 
-        .machine { background: #222; border: 5px solid var(--accent); border-radius: 25px; padding: 25px; width: 320px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.4); text-align: center; }
-        
-        .display { background: #000; height: 120px; border-radius: 15px; margin: 20px 0; overflow: hidden; position: relative; border: 2px solid #444; }
-        .slot-wrapper { position: absolute; width: 100%; transition: top 3s cubic-bezier(0.1, 0, 0.1, 1); top: 0; }
-        .slot-item { height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-        .brawler { font-size: 26px; color: #00ffcc; text-transform: uppercase; text-shadow: 0 0 10px #00ffcc; }
-        .trophy-text { color: #ff4444; font-size: 24px; margin-top: 5px; font-weight: bold; }
+        .container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
 
-        .controls { text-align: left; margin-bottom: 15px; }
-        label { font-size: 12px; color: #888; text-transform: uppercase; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #444; background: #333; color: white; font-size: 18px; margin-top: 5px; box-sizing: border-box; }
-        input:focus { border-color: var(--accent); outline: none; }
-        
-        button { background: linear-gradient(180deg, #ffcc00, #ff9900); border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 22px; cursor: pointer; box-shadow: 0 5px #cc7700; transition: 0.1s; font-family: 'Arial Black', sans-serif; }
-        button:active { transform: translateY(3px); box-shadow: 0 2px #cc7700; }
-        button:disabled { background: #555; box-shadow: none; color: #888; }
+        h2 {
+            text-align: center;
+            text-transform: uppercase;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            margin-top: 0;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            background: #252525;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .mode-selector label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #252525;
+            border: 2px solid #333;
+            border-radius: 12px;
+            color: var(--neon-blue);
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 1.1rem;
+            resize: none;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        textarea:focus { border-color: var(--neon-purple); }
+
+        .btn-clear {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: transparent;
+            border: 2px solid var(--neon-red);
+            color: var(--neon-red);
+            transition: 0.3s;
+        }
+
+        .btn-clear:hover { background: var(--neon-red); color: white; }
+
+        .result-container { position: relative; margin-top: 25px; }
+
+        .label-tag {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 35px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #ccc;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #outputText { 
+            color: #00ff41; 
+            border-color: #1b4d26;
+            background: #0a150c;
+        }
     </style>
 </head>
 <body>
 
-<div class="machine">
-    <div class="brand-title">Sajma Whell</div>
+<div class="container">
+    <h2>D.M Shifrator t</h2>
     
-    <div class="controls">
-        <label>Мінімум трофеїв (0-1000):</label>
-        <input type="number" id="minTrophies" value="1" min="0" max="1000">
+    <div class="mode-selector">
+        <label>
+            <input type="radio" name="mode" value="encrypt" checked onchange="liveProcess()"> Шифрувати
+        </label>
+        <label>
+            <input type="radio" name="mode" value="decrypt" onchange="liveProcess()"> Розшифрувати
+        </label>
     </div>
 
-    <div class="display">
-        <div class="slot-wrapper" id="slotWrapper">
-            <div class="slot-item"><span class="brawler">ГОТОВИЙ?</span></div>
-        </div>
-    </div>
+    <span class="label-tag">Вхідні дані:</span>
+    <textarea id="inputText" placeholder="Пишіть тут..." oninput="liveProcess()"></textarea>
+    
+    <button class="btn-clear" onclick="clearFields()">Очистити все</button>
 
-    <button id="spinBtn" onclick="spin()">КРУТИТИ 🎲</button>
+    <div class="result-container">
+        <span class="label-tag">Результат (Live):</span>
+        <button class="copy-btn" onclick="copyResult()">Копіювати</button>
+        <textarea id="outputText" readonly placeholder="Тут буде результат..."></textarea>
+    </div>
 </div>
 
 <script>
-const brawlers = ["Емз", "Френк", "Спайк", "Ріко", "Міна", "Пірс", "Поко", "Кольт", "Мортіс", "Ворон", "Отіс", "Кадзе", "Кендзі", "Анджело", "Амбер", "Карл", "Лілі", "Шейд", "Грей", "Байрон", "Фінкс", "Джин", "ДжуДжу", "Гас", "Нані", "Міпл", "Брок", "Тара", "Шеллі", "Гавс", "Аллі", "Бастер", "Мелоді", "Бель", "Пайпер", "Р.Т", "Сквік", "Пенні", "Беа", "Єва", "Беррі", "Хенк", "Чарлі", "Оллі", "Дерілл", "Глоуберт", "Бібі", "Булл", "Еш", "Мо", "Віллоу", "Пем", "Ніта", "Транк", "Джанет", "Менді", "Макс", "Джи Йонг", "Тік", "Барлі", "Ларі та Лорі", "Джіджі", "Сенді", "Сту", "Бо", "Даг", "Міко", "Драко", "Гейл", "Гріфф", "Діномайк", "Чак", "Кіт", "Базз", "Леон", "Колетт", "Лу", "Бонні", "Містер Пі", "Вольт", "Спраут", "Гром", "Фенг", "Честер", "Мейсі", "Сен", "8-біт", "Перл", "Едгар", "Зіггі", "Лумі", "Джесі", "Ель Прімо", "Джекі", "Лола", "Сем", "Роза", "Кленсі"];
+    const charMap = {
+        'а': '1', 'б': '"', 'в': '*', 'г': '(', 'ґ': ')', 'д': '.', 'е': '2', 'є': '92',
+        'ж': '?', 'з': '!', 'и': '3', 'і': '4', 'ї': '94', 'й': '9', 'к': '+', 'л': '-',
+        'м': '÷', 'н': '×', 'о': '5', 'п': 'π', 'р': "'", 'с': '§', 'т': '†', 'у': '6',
+        'ф': '=', 'х': '≈', 'ц': '<', 'ч': '>', 'ш': '[', 'щ': ']', 'ь': '0', 'ю': '96', 'я': '91', ' ': '_'
+    };
 
-function spin() {
-    const btn = document.getElementById('spinBtn');
-    const wrapper = document.getElementById('slotWrapper');
-    let minVal = parseInt(document.getElementById('minTrophies').value) || 0;
-    
-    // Обмеження: не більше 1000
-    if (minVal > 1000) {
-        minVal = 1000;
-        document.getElementById('minTrophies').value = 1000;
+    const sortedTokens = Object.keys(charMap)
+        .map(key => ({ char: key, code: charMap[key] }))
+        .sort((a, b) => b.code.length - a.code.length);
+
+    function liveProcess() {
+        const input = document.getElementById('inputText').value.toLowerCase();
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+        let result = '';
+
+        if (mode === 'encrypt') {
+            for (let char of input) {
+                result += charMap[char] !== undefined ? charMap[char] : char;
+            }
+        } else {
+            let i = 0;
+            while (i < input.length) {
+                let found = false;
+                for (let token of sortedTokens) {
+                    if (input.substr(i, token.code.length) === token.code) {
+                        result += token.char;
+                        i += token.code.length;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    result += input[i];
+                    i++;
+                }
+            }
+        }
+        document.getElementById('outputText').value = result;
     }
-    if (minVal < 0) minVal = 0;
 
-    btn.disabled = true;
-    wrapper.style.transition = 'none';
-    wrapper.style.top = '0';
-    
-    let html = '';
-    // Генеруємо 20 випадкових результатів для ефекту прокрутки
-    for(let i=0; i<20; i++) {
-        const randomB = brawlers[Math.floor(Math.random() * brawlers.length)];
-        
-        // Генеруємо ЛЮБЕ число від minVal до 1000
-        const randomT = Math.floor(Math.random() * (1000 - minVal + 1)) + minVal;
-        
-        html += `<div class="slot-item">
-            <span class="brawler">${randomB}</span>
-            <div class="trophy-text">🏆 ${randomT}</div>
-        </div>`;
+    function clearFields() {
+        document.getElementById('inputText').value = '';
+        document.getElementById('outputText').value = '';
     }
-    
-    wrapper.innerHTML = html;
-    
-    setTimeout(() => {
-        wrapper.style.transition = 'top 3s cubic-bezier(0.1, 0, 0.1, 1)';
-        wrapper.style.top = '-2280px'; 
-    }, 50);
 
-    setTimeout(() => { btn.disabled = false; }, 3100);
-}
+    function copyResult() {
+        const copyText = document.getElementById("outputText");
+        if (!copyText.value) return;
+        copyText.select();
+        navigator.clipboard.writeText(copyText.value);
+        
+        const btn = document.querySelector('.copy-btn');
+        btn.innerText = "Готово!";
+        setTimeout(() => btn.innerText = "Копіювати", 1500);
+    }
 </script>
 
 </body>
